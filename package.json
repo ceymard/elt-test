@@ -1,0 +1,12 @@
+{
+	"name": "test-elt",
+	"version": "0.0.1",
+	"dependencies": {
+		"concurrently": "^5.1.0"
+	},
+	"scripts": {
+		"tsc:watch": "tsc --watch | wtsc",
+		"parcel": "parcel index.html",
+		"watch": "concurrently --kill-others 'yarn parcel' 'yarn tsc:watch'"
+	}
+}
