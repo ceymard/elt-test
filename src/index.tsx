@@ -1,11 +1,12 @@
 import { append_child_and_mount, o } from 'elt'
 
-import { Button, TypographicZone, Styling as S, ControlBox, Input, Checkbox, Radio, Toggle } from 'elt-ui'
+import { Button, TypographicZone, Styling as S, ControlBox, Input, Checkbox, Radio, Toggle, ControlLabel } from 'elt-ui'
 
 import { rule } from 'osun'
 
 import FaSearch from 'elt-fa/search'
 import FaPower from 'elt-fa/power-off'
+import FaKey from 'elt-fa/key'
 
 import FaBold from 'elt-fa/bold'
 import FaItalic from 'elt-fa/italic'
@@ -29,6 +30,12 @@ append_child_and_mount(document.body, <TypographicZone class={S.box.padding(16)}
   <h3>Inputs</h3>
   <div>
     Similarly, inputs <Input placeholder='Placelholder' model={o_input}/> conform to the baseline <ControlBox><Input placeholder='Search' model={o_input}/><Button><FaSearch/></Button></ControlBox>
+    <br/>
+    Ajjjh <ControlBox>
+      <ControlLabel><FaKey/></ControlLabel>
+      <ControlLabel>Password</ControlLabel>
+      <Input model={o('')} type='text'/>
+    </ControlBox>
   </div>
   <h3>Checkboxes</h3>
   <div>
