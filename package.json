@@ -2,7 +2,8 @@
 	"name": "test-elt",
 	"version": "0.0.1",
 	"dependencies": {
-		"concurrently": "^5.1.0"
+		"concurrently": "^5.1.0",
+		"parcel": "^1.12.4"
 	},
 	"scripts": {
 		"tsc:watch": "tsc --watch | wtsc",
