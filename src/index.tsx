@@ -27,6 +27,10 @@ append_child_and_mount(document.body, <TypographicZone class={S.box.padding(16)}
     <Button click={() => console.log('??')}> Ok</Button> <Button>Cancel</Button> we keep the alignment <Checkbox model={o(true)}>Test</Checkbox> <ControlBox><Button>Ok</Button><Button>Cancel</Button></ControlBox> <Button> <FaPower/> Hello !</Button> With text next to them. <br/>
     This should look fine. <Button><FaPower/></Button>
   </div>
+  <div style={{fontSize: '1.2em'}}>
+    <Button click={() => console.log('??')}> Ok</Button> <Button>Cancel</Button> we keep the alignment <Checkbox model={o(true)}>Test</Checkbox> <ControlBox><Button>Ok</Button><Button>Cancel</Button></ControlBox> <Button> <FaPower/> Hello !</Button> With text next to them. <br/>
+    This should look fine. <Button><FaPower/></Button>
+  </div>
   <h3>Inputs</h3>
   <div>
     Similarly, inputs <Input placeholder='Placelholder' model={o_input}/> conform to the baseline <ControlBox><Input placeholder='Search' model={o_input}/><Button><FaSearch/></Button></ControlBox>
