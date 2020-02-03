@@ -29,6 +29,7 @@ append_child_and_mount(document.body, <TypographicZone class={S.box.padding(16)}
   <h1>Roadmap</h1>
   <ul>
     <li><FaChecked/> Respecting alignment !</li>
+    <li><FaToCheck/> Float with triangles</li>
     <li><FaToCheck/> Sane border handling in ControlBoxes</li>
     <li><FaToCheck/> Select simple</li>
     <li><FaToCheck/> Select multiple</li>
@@ -44,7 +45,7 @@ append_child_and_mount(document.body, <TypographicZone class={S.box.padding(16)}
     This should look fine. <Button><FaPower/></Button> <Button>DO SOMETHING</Button>
   </div>
   <div style={{fontSize: '1.2em'}}>
-    <Button click={() => console.log('??')}>Ok</Button> <Button>Cancel</Button> we keep the alignment <Checkbox model={o(true)}>Test</Checkbox> <ControlBox><Button><FaCheckbox/> Ok</Button><Button>Cancel</Button></ControlBox> <Button><FaPower/> Hello !</Button> With text next to them. <br/>
+    <Button contrast click={() => console.log('??')}>Ok</Button> <Button>Cancel</Button> we keep the alignment <Checkbox model={o(true)}>Test</Checkbox> <ControlBox><Button><FaCheckbox/> Ok</Button><Button>Cancel</Button></ControlBox> <Button><FaPower/> Hello !</Button> With text next to them. <br/>
     This should look fine. <Button><FaPower/></Button>
   </div>
   <h3>Inputs</h3>
