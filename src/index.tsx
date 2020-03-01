@@ -1,21 +1,8 @@
-import { append_child_and_init, o, $inserted, Repeat, If, Fragment as F } from 'elt'
+import { append_child_and_init, o, $inserted, $Repeat, $If, Fragment as $F } from 'elt'
 
 import { Button, TypographicZone, Styling as S, ControlBox, Input, Checkbox, Radio, Toggle, ControlLabel, Select, Control, I } from 'elt-ui'
 
 import { rule } from 'osun'
-
-// import FaSearch from 'elt-fa/search'
-// import FaPower from 'elt-fa/power-off'
-// import FaKey from 'elt-fa/key'
-// // import FaCheckbox from 'elt-fa/check'
-// import FaClose from 'elt-fa/window-close'
-// import FaUser from 'elt-fa/user-alt'
-
-// import FaBold from 'elt-fa/bold'
-// import FaItalic from 'elt-fa/italic'
-// import FaCentered from 'elt-fa/align-center'
-// import FaChecked from 'elt-fa/check-square-light'
-// import FaToCheck from 'elt-fa/square-light'
 
 rule`html, body`({
   fontFamily: `Ubuntu, sans-serif`,
@@ -41,18 +28,18 @@ append_child_and_init(document.body, <TypographicZone class={S.box.padding(16)}>
     <li><I light name='square'/> Color picker</li>
   </ul>
   <h1>
-    {$inserted(i => console.log(`inserted`, i.parentNode?.parentNode))}
+    {$inserted((i, p) => console.log(`inserted`, p))}
     Demo
   </h1>
   <div>
-    {Repeat(o_array, o_arr => <F><span>{o_arr}</span> <span>{o_arr}2</span></F>, () => ',')}
+    {$Repeat(o_array, o_arr => <$F><span>{o_arr}</span> <span>{o_arr}2</span></$F>, () => ',')}
   </div>
   <h3>Buttons</h3>
   <div>
     <Button contrast click={() => console.log('??')}>Ok</Button> <Button click={e => o_array.mutate(a => (a.push('value'), a))}>Cancel</Button> we keep the alignment <Checkbox model={o_check}>Test</Checkbox> <ControlBox><Button>Ok</Button><Button click={e => o_array.mutate(a => a.slice(0, 3))}>Cancel</Button></ControlBox> <Button> {I('power-off')} Hello !</Button> With text next to them. <br/>
     This should look fine. <Button>{I('power-off')}</Button> <Button>DO SOMETHING</Button>
   </div>
-  {If(o_check, () => <F>
+  {$If(o_check, () => <$F>
     <h3>Inputs</h3>
     <div style={{lineHeight: '2em'}}>
       Similarly, inputs Placeholder <Input placeholder='Placeholder' model={o_input}/> conform to the baseline <ControlBox><Input placeholder='Search' model={o_input}/><Button contrast><span style={{width: '1.25em', textAlign: 'center', display: 'inline-block'}}>{o_input.tf(i => i.length ? I('window-close') : I('search'))}</span></Button></ControlBox>
@@ -63,7 +50,7 @@ append_child_and_init(document.body, <TypographicZone class={S.box.padding(16)}>
         <textarea rows={4} class={[Control.css.control, S.box.border(S.TINT14)]} type='text'/>
       </ControlBox>
     </div>
-  </F>)}
+  </$F>)}
   <h3>Checkboxes</h3>
   <div style={{lineHeight: '2em'}}>
      <Checkbox disabled model={o(true)}>Test 2</Checkbox>
