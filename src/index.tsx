@@ -1,4 +1,6 @@
-import { append_child_and_init, o, $inserted, $Repeat, $If, Fragment as $F } from 'elt'
+import { o, $inserted, $Repeat, $If, $Fragment as $, $removed, setup_mutation_observer } from 'elt'
+
+setup_mutation_observer(document)
 
 import { Button, TypographicZone, Styling as S, ControlBox, Input, Checkbox, Radio, Toggle, ControlLabel, Select, Control, I } from 'elt-ui'
 
@@ -14,43 +16,53 @@ const o_value = o(1)
 const o_check = o(true)
 const o_array = o(['a', 'b', 'c'])
 
-append_child_and_init(document.body, <TypographicZone class={S.box.padding(16)}>
+
+document.body.appendChild(<TypographicZone class={S.box.padding(16)}>
+  {$inserted(() => console.log('YEAR'))}
   <h1>Roadmap</h1>
   <ul>
-    <li><I light name='check-square'/> Respecting alignment !</li>
-    <li><I light name='square'/> Float with triangles</li>
-    <li><I light name='square'/> Sane border handling in ControlBoxes</li>
-    <li><I light name='square'/> Select simple</li>
-    <li><I light name='square'/> Select multiple</li>
-    <li><I light name='square'/> Select with auto complete</li>
-    <li><I light name='square'/> Date Selector</li>
-    <li><I light name='square'/> Number Selector</li>
-    <li><I light name='square'/> Color picker</li>
+    <li>{I('check-square')} Respecting alignment !</li>
+    <li>{I('square')} Float with triangles</li>
+    <li>{I('square')} Sane border handling in ControlBoxes</li>
+    <li>{I('square')} Select simple</li>
+    <li>{I('square')} Select multiple</li>
+    <li>{I('square')} Select with auto complete</li>
+    <li>{I('square')} Date Selector</li>
+    <li>{I('square')} Number Selector</li>
+    <li>{I('square')} Color picker</li>
   </ul>
   <h1>
-    {$inserted((i, p) => console.log(`inserted`, p))}
     Demo
   </h1>
   <div>
-    {$Repeat(o_array, o_arr => <$F><span>{o_arr}</span> <span>{o_arr}2</span></$F>, () => ',')}
+    {$Repeat(o_array, o_arr => <$><span>{o_arr}</span> <span>{o_arr}2</span></$>, () => ',')}
   </div>
   <h3>Buttons</h3>
   <div>
-    <Button contrast click={() => console.log('??')}>Ok</Button> <Button click={e => o_array.mutate(a => (a.push('value'), a))}>Cancel</Button> we keep the alignment <Checkbox model={o_check}>Test</Checkbox> <ControlBox><Button>Ok</Button><Button click={e => o_array.mutate(a => a.slice(0, 3))}>Cancel</Button></ControlBox> <Button> {I('power-off')} Hello !</Button> With text next to them. <br/>
+    <Button contrast click={() => console.log('??')}>Ok</Button> <Button click={e => o_array.mutate(a => {
+      var res = a.slice()
+      res.push('value')
+      return res
+    })}>Cancel</Button> we keep the alignment <Checkbox model={o_check}>Test</Checkbox> <ControlBox><Button>Ok</Button><Button click={e => o_array.mutate(a => a.slice(0, 3))}>Cancel</Button></ControlBox> <Button> {I('power-off')} Hello !</Button> With text next to them. <br/>
     This should look fine. <Button>{I('power-off')}</Button> <Button>DO SOMETHING</Button>
   </div>
-  {$If(o_check, () => <$F>
-    <h3>Inputs</h3>
+  {$If(o_check, () => <$>
+    <h3>
+      Inputs
+    </h3>
     <div style={{lineHeight: '2em'}}>
       Similarly, inputs Placeholder <Input placeholder='Placeholder' model={o_input}/> conform to the baseline <ControlBox><Input placeholder='Search' model={o_input}/><Button contrast><span style={{width: '1.25em', textAlign: 'center', display: 'inline-block'}}>{o_input.tf(i => i.length ? I('window-close') : I('search'))}</span></Button></ControlBox>
       <br/>
       <ControlBox>
+        {$inserted(n => console.log('inserted', n))}
+        {$removed(n => console.log('removed', n))}
+
         <ControlLabel>{I('key')}</ControlLabel>
         <ControlLabel>Password</ControlLabel>
         <textarea rows={4} class={[Control.css.control, S.box.border(S.TINT14)]} type='text'/>
       </ControlBox>
     </div>
-  </$F>)}
+  </$>)}
   <h3>Checkboxes</h3>
   <div style={{lineHeight: '2em'}}>
      <Checkbox disabled model={o(true)}>Test 2</Checkbox>
