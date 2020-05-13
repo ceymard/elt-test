@@ -1,4 +1,4 @@
-import { o, $inserted, $Repeat, $If, $Fragment as $, $removed, setup_mutation_observer } from 'elt'
+import { o, $inserted, Repeat, If, Fragment as $, $removed, setup_mutation_observer } from 'elt'
 
 setup_mutation_observer(document)
 
@@ -35,18 +35,18 @@ document.body.appendChild(<TypographicZone class={S.box.padding(16)}>
     Demo
   </h1>
   <div>
-    {$Repeat(o_array, o_arr => <$><span>{o_arr}</span> <span>{o_arr}2</span></$>, () => ',')}
+    {Repeat(o_array, o_arr => <$><span>{o_arr}</span> <span>{o_arr}2</span></$>, () => ',')}
   </div>
   <h3>Buttons</h3>
   <div>
-    <Button contrast click={() => console.log('??')}>Ok</Button> <Button click={e => o_array.mutate(a => {
-      var res = a.slice()
+    <Button contrast click={() => console.log('??')}>Ok</Button> <Button click={e => o_array.set((() => {
+      var res = o_array.get().slice()
       res.push('value')
       return res
-    })}>Cancel</Button> we keep the alignment <Checkbox model={o_check}>Test</Checkbox> <ControlBox><Button>Ok</Button><Button click={e => o_array.mutate(a => a.slice(0, 3))}>Cancel</Button></ControlBox> <Button> {I('power-off')} Hello !</Button> With text next to them. <br/>
+    })())}>Cancel</Button> we keep the alignment <Checkbox model={o_check}>Test</Checkbox> <ControlBox><Button>Ok</Button><Button click={e => o_array.set(o_array.get().slice(0, 3))}>Cancel</Button></ControlBox> <Button> {I('power-off')} Hello !</Button> With text next to them. <br/>
     This should look fine. <Button>{I('power-off')}</Button> <Button>DO SOMETHING</Button>
   </div>
-  {$If(o_check, () => <$>
+  {If(o_check, () => <$>
     <h3>
       Inputs
     </h3>
