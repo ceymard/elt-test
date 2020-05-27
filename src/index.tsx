@@ -5,6 +5,7 @@ setup_mutation_observer(document)
 import { Button, TypographicZone, Styling as S, ControlBox, Input, Checkbox, Radio, Toggle, ControlLabel, Select, Control, I } from 'elt-ui'
 
 import { rule } from 'osun'
+import { ControlTable, ControlRow } from 'elt-ui/lib/control'
 
 rule`html, body`({
   fontFamily: `Ubuntu, sans-serif`,
@@ -22,14 +23,16 @@ document.body.appendChild(<TypographicZone class={S.box.padding(16)}>
   <h1>Roadmap</h1>
   <ul>
     <li>{I('check-square')} Respecting alignment !</li>
-    <li>{I('square')} Float with triangles</li>
+    <li>{I('check-square')} Float with triangles</li>
+    <li>{I('square')} Color handling with lch</li>
     <li>{I('square')} Sane border handling in ControlBoxes</li>
-    <li>{I('square')} Select simple</li>
+    <li>{I('check-square')} Select simple</li>
     <li>{I('square')} Select multiple</li>
     <li>{I('square')} Select with auto complete</li>
     <li>{I('square')} Date Selector</li>
     <li>{I('square')} Number Selector</li>
     <li>{I('square')} Color picker</li>
+    <li>{I('square')} Slider</li>
   </ul>
   <h1>
     Demo
@@ -104,21 +107,27 @@ document.body.appendChild(<TypographicZone class={S.box.padding(16)}>
     <Select style={{minWidth: '90px'}} options={[1, 2, 3]} model={o(1)} labelfn={e => e}></Select> Next to text as well.
   </div>
 
+  <p>Hello <ControlTable style={{display: 'inline-table'}}><tr><Toggle model={o(false)}>Yeah</Toggle><Toggle model={o(false)}>!!</Toggle></tr></ControlTable> World !</p>
+
   <h3>Having fun...</h3>
 
-  <div style={{lineHeight: '2.5em'}}>
-    <ControlBox vertical>
-      <ControlBox>
+    <ControlTable>
+      <tr><td colspan={3}><ControlLabel>Some title that spans</ControlLabel></td></tr>
+      <ControlRow>
         <ControlLabel>{I('user')}</ControlLabel>
         <ControlLabel>Username</ControlLabel>
-        <Input model={o('')} type='text'/>
-      </ControlBox>
-      <ControlBox>
+        <Input placeholder='username' model={o('')} type='text'/>
+      </ControlRow>
+      <tr>
+        <td colspan={3}>
+          <Toggle model={o(false)} style={{columnSpan: 'all'}}>Doing a lot of stuff</Toggle>
+        </td>
+      </tr>
+      <ControlRow>
         <ControlLabel>{I('key')}</ControlLabel>
         <ControlLabel>Password</ControlLabel>
-        <Input model={o('')} type='password'/>
-      </ControlBox>
-    </ControlBox>
-  </div>
+        <Input placeholder='password' model={o('')} type='password'/>
+      </ControlRow>
+    </ControlTable>
 
 </TypographicZone>)
