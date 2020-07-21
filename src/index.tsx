@@ -2,14 +2,31 @@ import { o, $inserted, Repeat, If, Fragment as $, $removed, setup_mutation_obser
 
 setup_mutation_observer(document)
 
-import { Button, TypographicZone, Styling as S, ControlBox, Input, Checkbox, Radio, Toggle, ControlLabel, Select, Control, I } from 'elt-ui'
+import 'elt-fa/check-square-duotone'
+import 'elt-fa/square-light'
+import 'elt-fa/power-off-regular'
+import 'elt-fa/search-regular'
+import 'elt-fa/window-close-solid'
+import 'elt-fa/key-regular'
+import 'elt-fa/user-regular'
+import 'elt-fa/bold-regular'
+import 'elt-fa/italic-regular'
+import 'elt-fa/align-center-regular'
+
+
+import { Button, TypographicZone, Styling as S, ControlBox, Input, Checkbox, Radio, Toggle, ControlLabel, Select, Control } from 'elt-ui'
+import { I } from 'elt-fa'
 
 import { rule } from 'osun'
 import { ControlTable, ControlRow } from 'elt-ui/lib/control'
 
 rule`html, body`({
-  fontFamily: `Ubuntu, sans-serif`,
-  fontWeight: 300
+  fontFamily: `"Segoe UI", Candara, "Bitstream Vera Sans", "Noto Sans Symbols2", "Liberation Serif", "DejaVu Sans", "Bitstream Vera Sans", "Trebuchet MS", Verdana, "Verdana Ref", sans-serif !important`,
+  touchAction: 'manipulation'
+})
+
+rule`.fa-secondary`({
+  fill: S.TINT14
 })
 
 const o_input = o('')
@@ -17,9 +34,7 @@ const o_value = o(1)
 const o_check = o(true)
 const o_array = o(['a', 'b', 'c'])
 
-
 document.body.appendChild(<TypographicZone class={S.box.padding(16)}>
-  {$inserted(() => console.log('YEAR'))}
   <h1>Roadmap</h1>
   <ul>
     <li>{I('check-square')} Respecting alignment !</li>
@@ -107,16 +122,16 @@ document.body.appendChild(<TypographicZone class={S.box.padding(16)}>
     <Select style={{minWidth: '90px'}} options={[1, 2, 3]} model={o(1)} labelfn={e => e}></Select> Next to text as well.
   </div>
 
-  <p>Hello <ControlTable style={{display: 'inline-table'}}><tr><Toggle model={o(false)}>Yeah</Toggle><Toggle model={o(false)}>!!</Toggle></tr></ControlTable> World !</p>
+  <p>Hello <ControlTable style={{display: 'inline-table', width: '180px', borderCollapse: 'collapse'}}><ControlRow><td><Toggle model={o(false)}>Yeah</Toggle></td><td><Toggle model={o(false)}>!!</Toggle></td></ControlRow></ControlTable> World !</p>
 
   <h3>Having fun...</h3>
 
     <ControlTable>
       <tr><td colspan={3}><ControlLabel>Some title that spans</ControlLabel></td></tr>
       <ControlRow>
-        <ControlLabel>{I('user')}</ControlLabel>
-        <ControlLabel>Username</ControlLabel>
-        <Input placeholder='username' model={o('')} type='text'/>
+        <td><ControlLabel>{I('user')}</ControlLabel></td>
+        <td><ControlLabel>Username</ControlLabel></td>
+        <td><Input placeholder='username' model={o('')} type='text'/></td>
       </ControlRow>
       <tr>
         <td colspan={3}>
@@ -124,10 +139,25 @@ document.body.appendChild(<TypographicZone class={S.box.padding(16)}>
         </td>
       </tr>
       <ControlRow>
-        <ControlLabel>{I('key')}</ControlLabel>
-        <ControlLabel>Password</ControlLabel>
-        <Input placeholder='password' model={o('')} type='password'/>
+        <td><ControlLabel>{I('key')}</ControlLabel></td>
+        <td><ControlLabel>Password</ControlLabel></td>
+        <td><Input placeholder='password' model={o('')} type='password'/></td>
       </ControlRow>
     </ControlTable>
+
+    {' '}
+    <ControlTable>
+
+          <ControlRow>
+          <td><ControlLabel>{I('key')}</ControlLabel></td>
+            <td><ControlLabel>Utilisateur</ControlLabel></td>
+            <td><Input placeholder='' model={o('')} type='text'></Input></td>
+          </ControlRow>
+          <ControlRow>
+          <td><ControlLabel>{I('key')}</ControlLabel></td>
+            <td><ControlLabel>Mot de passe</ControlLabel></td>
+            <td><Input placeholder='' type='password' model={o('')}></Input></td>
+          </ControlRow>
+        </ControlTable>
 
 </TypographicZone>)
