@@ -1,0 +1,21 @@
+version: '3'
+
+services:
+
+  # Le client web à venir
+  web:
+    image: eu.gcr.io/divine-arcade-94510/goserver:0.3.5
+    restart: unless-stopped
+    dns: 8.8.8.8
+
+    environment:
+      VIRTUAL_HOST: elt.dev.sales-way.com
+      SELF_SIGNED_HOST: elt.dev.sales-way.com
+
+      VIRTUAL_PORT: "3001"
+      SW_CSP_DEFAULT_SRC: "data:"
+
+
+    volumes:
+      - ./__dist__/client:/static
+      - /etc/timezone:/etc/timezone:ro
