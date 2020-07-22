@@ -1,4 +1,4 @@
-import { o, $inserted, Repeat, If, Fragment as $, $removed, setup_mutation_observer } from 'elt'
+import { o, $inserted, Repeat, If, Fragment as $, $removed, setup_mutation_observer, $on } from 'elt'
 
 setup_mutation_observer(document)
 
@@ -6,7 +6,7 @@ import 'elt-fa/check-square-duotone'
 import 'elt-fa/square-light'
 import 'elt-fa/power-off-regular'
 import 'elt-fa/search-regular'
-import 'elt-fa/window-close-solid'
+import 'elt-fa/window-close-regular'
 import 'elt-fa/key-regular'
 import 'elt-fa/user-regular'
 import 'elt-fa/bold-regular'
@@ -14,11 +14,10 @@ import 'elt-fa/italic-regular'
 import 'elt-fa/align-center-regular'
 
 
-import { Button, TypographicZone, Styling as S, ControlBox, Input, Checkbox, Radio, Toggle, ControlLabel, Select, Control } from 'elt-ui'
+import { Button, TypographicZone, Styling as S, ControlBox, Input, Checkbox, Radio, Toggle, ControlLabel, Select, Control, ControlTable, ControlRow } from 'elt-ui'
 import { I } from 'elt-fa'
 
 import { rule } from 'osun'
-import { ControlTable, ControlRow } from 'elt-ui/lib/control'
 
 rule`html, body`({
   fontFamily: `"Segoe UI", Candara, "Bitstream Vera Sans", "Noto Sans Symbols2", "Liberation Serif", "DejaVu Sans", "Bitstream Vera Sans", "Trebuchet MS", Verdana, "Verdana Ref", sans-serif !important`,
@@ -39,15 +38,15 @@ document.body.appendChild(<TypographicZone class={S.box.padding(16)}>
   <ul>
     <li>{I('check-square')} Respecting alignment !</li>
     <li>{I('check-square')} Float with triangles</li>
-    <li>{I('square')} Color handling with lch</li>
-    <li>{I('square')} Sane border handling in ControlBoxes</li>
+    <li>{I('check-square')} Color handling with lch</li>
+    <li>{I('check-square')} Sane border handling in ControlBoxes</li>
     <li>{I('check-square')} Select simple</li>
-    <li>{I('square')} Select multiple</li>
-    <li>{I('square')} Select with auto complete</li>
-    <li>{I('square')} Date Selector</li>
-    <li>{I('square')} Number Selector</li>
-    <li>{I('square')} Color picker</li>
+    <li>{I('square')} Date & Time Picker</li>
+    <li>{I('square')} Switch</li>
     <li>{I('square')} Slider</li>
+    <li>{I('square')} Data Table</li>
+    <li>{I('square')} Number Selector ?</li>
+    <li>{I('square')} Color picker ?</li>
   </ul>
   <h1>
     Demo
@@ -69,7 +68,11 @@ document.body.appendChild(<TypographicZone class={S.box.padding(16)}>
       Inputs
     </h3>
     <div style={{lineHeight: '2em'}}>
-      Similarly, inputs Placeholder <Input placeholder='Placeholder' model={o_input}/> conform to the baseline <ControlBox><Input placeholder='Search' model={o_input}/><Button contrast><span style={{width: '1.25em', textAlign: 'center', display: 'inline-block'}}>{o_input.tf(i => i.length ? I('window-close') : I('search'))}</span></Button></ControlBox>
+      Similarly, inputs Placeholder <Input placeholder='Placeholder' model={o_input}/> conform to the baseline <ControlBox><Input placeholder='Search' model={o_input}>
+        {$on('keydown', ev => {
+          if (ev.code === 'Escape') o_input.set('')
+        })}
+      </Input><Button contrast><span style={{width: '1.25em', textAlign: 'center', display: 'inline-block'}}>{o_input.tf(i => i.length ? I('window-close') : I('search'))}</span></Button></ControlBox>
       <br/>
       <ControlBox>
         {$inserted(n => console.log('inserted', n))}
@@ -83,7 +86,12 @@ document.body.appendChild(<TypographicZone class={S.box.padding(16)}>
   </$>)}
   <h3>Checkboxes</h3>
   <div style={{lineHeight: '2em'}}>
+    Hello !{' '}
+      <Button>??</Button>
+      {' '}
      <Checkbox disabled model={o(true)}>Test 2</Checkbox>
+     {' '}
+     More text
      {' '}
      <ControlBox>
       <ControlLabel>Some Options</ControlLabel>
