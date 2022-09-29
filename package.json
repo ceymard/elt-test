@@ -3,8 +3,12 @@
 	"version": "0.0.1",
 	"dependencies": {
 		"concurrently": "^5.1.0",
-		"elt-fa": "^0.4.3",
-		"parcel": "^1.12.4"
+		"elt": "^2.0.9",
+		"elt-fa": "^0.7.0",
+		"elt-ui": "^0.10.1",
+		"immer": "^9.0.15",
+		"parcel": "^1.12.4",
+		"typescript": "^4.8.4"
 	},
 	"scripts": {
 		"tsc:watch": "tsc --watch | wtsc",

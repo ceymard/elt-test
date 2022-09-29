@@ -1,31 +1,25 @@
 import { o, $inserted, Repeat, If, Fragment as $, $removed, setup_mutation_observer, $on } from 'elt'
+import * as immer from "immer"
+immer.enableMapSet()
+o.Observable.useImmer(immer)
+
+import * as I from "elt-fa/sharp-solid"
 
 setup_mutation_observer(document)
 
-import 'elt-fa/check-square-duotone'
-import 'elt-fa/square-light'
-import 'elt-fa/power-off-regular'
-import 'elt-fa/search-regular'
-import 'elt-fa/window-close-regular'
-import 'elt-fa/key-regular'
-import 'elt-fa/user-regular'
-import 'elt-fa/bold-regular'
-import 'elt-fa/italic-regular'
-import 'elt-fa/align-center-regular'
 
-
-import { Button, TypographicZone, Styling as S, ControlBox, Input, Checkbox, Radio, Toggle, ControlLabel, Select, Control, ControlTable, ControlRow } from 'elt-ui'
-import { I } from 'elt-fa'
+import { Button, TypographicZone, builder as S, ControlBox, Input, Checkbox, Radio, Toggle, ControlLabel, Select, Control, ControlTable, ControlRow, Responsive, ResponsiveObservable, css_control_border } from 'elt-ui'
 
 import { rule } from 'osun'
+import { o_viewport_width, o_online, o_location_hash, oMouseHovering, theme } from 'elt-ui'
 
 rule`html, body`({
-  fontFamily: `"Segoe UI", Candara, "Bitstream Vera Sans", "Noto Sans Symbols2", "Liberation Serif", "DejaVu Sans", "Bitstream Vera Sans", "Trebuchet MS", Verdana, "Verdana Ref", sans-serif !important`,
+  fontFamily: `"Roboto", sans-serif !important`,
   touchAction: 'manipulation'
 })
 
 rule`.fa-secondary`({
-  fill: S.TINT14
+  fill: theme.tint14
 })
 
 const o_input = o('')
@@ -33,54 +27,96 @@ const o_value = o(1)
 const o_check = o(true)
 const o_array = o(['a', 'b', 'c'])
 
-document.body.appendChild(<TypographicZone class={S.box.padding(16)}>
+const o_pouet = new ResponsiveObservable(() => '<444')
+  .atWidth(444, () => '>=444')
+
+function MyComponent(a: {  }) {
+  return <div></div>
+}
+
+document.body.appendChild(<TypographicZone class={S.padding(16)}>
   <h1>Roadmap</h1>
   <ul>
-    <li>{I('check-square')} Respecting alignment !</li>
-    <li>{I('check-square')} Float with triangles</li>
-    <li>{I('check-square')} Color handling with lch</li>
-    <li>{I('check-square')} Sane border handling in ControlBoxes</li>
-    <li>{I('check-square')} Select simple</li>
-    <li>{I('square')} Date & Time Picker</li>
-    <li>{I('square')} Switch</li>
-    <li>{I('square')} Slider</li>
-    <li>{I('square')} Data Table</li>
-    <li>{I('square')} Number Selector ?</li>
-    <li>{I('square')} Color picker ?</li>
+    <li>{I.FaSquareCheck()} Respecting alignment !</li>
+    <li>{I.FaSquareCheck()} Float with triangles</li>
+    <li>{I.FaSquareCheck()} Color handling with lch</li>
+    <li>{I.FaSquareCheck()} Sane border handling in ControlBoxes</li>
+    <li>{I.FaSquareCheck()} Select simple</li>
+    <li>{I.FaSquare()} Easier animations</li>
+    <li>{I.FaSquare()} Date & Time Picker</li>
+    <li>{I.FaSquare()} Switch</li>
+    <li>{I.FaSquare()} Slider</li>
+    <li>{I.FaSquare()} Data Table</li>
+    <li>{I.FaSquare()} Responsive helpers ?</li>
+    <li>{I.FaSquare()} Investigate grids</li>
+    <li>{I.FaSquare()} Number Selector ?</li>
+    <li>{I.FaSquare()} Color picker ?</li>
   </ul>
   <h1>
     Demo
   </h1>
   <div>
-    {Repeat(o_array, o_arr => <$><span>{o_arr}</span> <span>{o_arr}2</span></$>, () => ',')}
-  </div>
-  <h3>Buttons</h3>
-  <div>
-    <Button contrast click={() => console.log('??')}>Ok</Button> <Button click={e => o_array.set((() => {
+    <Button click={_ => {
+      console.log(o_array.get())
+      o_array.produce(array => {
+        shuffle(array)
+      })
+    }}>Shuffle</Button>
+    {' '}
+    <Button click={e => o_array.set((() => {
       var res = o_array.get().slice()
       res.push('value')
       return res
-    })())}>Cancel</Button> we keep the alignment <Checkbox model={o_check}>Test</Checkbox> <ControlBox><Button>Ok</Button><Button click={e => o_array.set(o_array.get().slice(0, 3))}>Cancel</Button></ControlBox> <Button> {I('power-off')} Hello !</Button> With text next to them. <br/>
-    This should look fine. <Button>{I('power-off')}</Button> <Button>DO SOMETHING</Button>
+    })())}>Append</Button>
+    {' '}
+    <Button click={e => o_array.set(o_array.get().slice(0, 3))}>Reset</Button>
+    {' '}
+    <Button click={_ => o_array.set([])}>Empty</Button>
+  </div>
+  <div>
+    {Repeat(o_array, {separator: () => ', '}, (o_arr, o_i) => <$>
+      <span>Element {o.tf(o_i, i => i + 1)}</span>
+      <span>{o_arr}</span>
+    </$>)}
+  </div>
+  <h3>Buttons</h3>
+  <div>
+    <Button kind="contrast" click={() => console.log('??')}>Ok</Button> <Button >Cancel</Button> we keep the alignment <Checkbox model={o_check}>Test</Checkbox> <ControlBox><Button>Ok</Button><Button >Cancel</Button></ControlBox> <Button> {I.FaPowerOff()} Hello !</Button> With text next to them. <br/>
+    This should look fine. <Button>{I.FaPowerOff()}</Button> <Button>DO SOMETHING</Button>
   </div>
   {If(o_check, () => <$>
     <h3>
-      Inputs
+      Inputs {o_viewport_width} {o_online.tf(o => o ? 'Online' : 'Offline')} {o_location_hash}
+      {' '}
+      {node => {
+        const o_hver = oMouseHovering(node)
+        return o_hver.tf(h => h ? 'Hovering' : 'Not hovering')
+      }}
+      {o_pouet}
     </h3>
+    <div>
+      {Responsive(() => 'DEFAULT')
+      .atPortrait(() => <div class={S.bold}>Mobile portrait</div>)
+      .atWidth(Responsive.TABLET, () => 'TABLET')
+      .atLandscape(Responsive.DESKTOP, () => 'Desktop landscape')
+      .atPortrait(Responsive.DESKTOP, () => 'Desktop portrait')
+      }
+    </div>
+
     <div style={{lineHeight: '2em'}}>
       Similarly, inputs Placeholder <Input placeholder='Placeholder' model={o_input}/> conform to the baseline <ControlBox><Input placeholder='Search' model={o_input}>
         {$on('keydown', ev => {
           if (ev.code === 'Escape') o_input.set('')
         })}
-      </Input><Button contrast><span style={{width: '1.25em', textAlign: 'center', display: 'inline-block'}}>{o_input.tf(i => i.length ? I('window-close') : I('search'))}</span></Button></ControlBox>
+      </Input><Button kind="contrast"><span style={{width: '1.25em', textAlign: 'center', display: 'inline-block'}}>{o_input.tf(i => i.length ? I.FaXmark() : I.FaMagnifyingGlass())}</span></Button></ControlBox>
       <br/>
       <ControlBox>
         {$inserted(n => console.log('inserted', n))}
         {$removed(n => console.log('removed', n))}
 
-        <ControlLabel>{I('key')}</ControlLabel>
+        <ControlLabel>{I.FaKey()}</ControlLabel>
         <ControlLabel>Password</ControlLabel>
-        <textarea rows={4} class={[Control.css.control, S.box.border(S.TINT14)]} type='text'/>
+        <textarea rows={4} class={[css_control_border, S.border(theme.tint14)]} type='text'/>
       </ControlBox>
     </div>
   </$>)}
@@ -119,9 +155,9 @@ document.body.appendChild(<TypographicZone class={S.box.padding(16)}>
     As usual, it is centered
     {' '}
     <ControlBox>
-      <Toggle model={o(false)}><span style={{width: '1.25em', textAlign: 'center', display: 'inline-block'}}>{I('bold')}</span></Toggle>
-      <Toggle model={o(true)}><span style={{width: '1.25em', textAlign: 'center', display: 'inline-block'}}>{I('italic')}</span></Toggle>
-      <Toggle model={o(false)}><span style={{width: '1.25em', textAlign: 'center', display: 'inline-block'}}>{I('align-center')}</span></Toggle>
+      <Toggle model={o(false)}><span style={{width: '1.25em', textAlign: 'center', display: 'inline-block'}}>{I.FaBold()}</span></Toggle>
+      <Toggle model={o(true)}><span style={{width: '1.25em', textAlign: 'center', display: 'inline-block'}}>{I.FaItalic()}</span></Toggle>
+      <Toggle model={o(false)}><span style={{width: '1.25em', textAlign: 'center', display: 'inline-block'}}>{I.FaAlignCenter()}</span></Toggle>
     </ControlBox>
   </div>
 
@@ -137,7 +173,7 @@ document.body.appendChild(<TypographicZone class={S.box.padding(16)}>
     <ControlTable>
       <tr><td colspan={3}><ControlLabel>Some title that spans</ControlLabel></td></tr>
       <ControlRow>
-        <td><ControlLabel>{I('user')}</ControlLabel></td>
+        <td><ControlLabel>{I.FaUser()}</ControlLabel></td>
         <td><ControlLabel>Username</ControlLabel></td>
         <td><Input placeholder='username' model={o('')} type='text'/></td>
       </ControlRow>
@@ -147,7 +183,7 @@ document.body.appendChild(<TypographicZone class={S.box.padding(16)}>
         </td>
       </tr>
       <ControlRow>
-        <td><ControlLabel>{I('key')}</ControlLabel></td>
+        <td><ControlLabel>{I.FaKey()}</ControlLabel></td>
         <td><ControlLabel>Password</ControlLabel></td>
         <td><Input placeholder='password' model={o('')} type='password'/></td>
       </ControlRow>
@@ -157,15 +193,33 @@ document.body.appendChild(<TypographicZone class={S.box.padding(16)}>
     <ControlTable>
 
           <ControlRow>
-          <td><ControlLabel>{I('key')}</ControlLabel></td>
+          <td><ControlLabel>{I.FaKey()}</ControlLabel></td>
             <td><ControlLabel>Utilisateur</ControlLabel></td>
             <td><Input placeholder='' model={o('')} type='text'></Input></td>
           </ControlRow>
           <ControlRow>
-          <td><ControlLabel>{I('key')}</ControlLabel></td>
+          <td><ControlLabel>{I.FaKey()}</ControlLabel></td>
             <td><ControlLabel>Mot de passe</ControlLabel></td>
             <td><Input placeholder='' type='password' model={o('')}></Input></td>
           </ControlRow>
         </ControlTable>
 
 </TypographicZone>)
+
+
+function shuffle<T>(array: T[]) {
+  let currentIndex = array.length, randomIndex: number;
+
+  // While there remain elements to shuffle...
+  while (0 !== currentIndex) {
+    // Pick a remaining element...
+    randomIndex = Math.floor(Math.random() * currentIndex);
+    currentIndex--;
+
+    // And swap it with the current element.
+    [array[currentIndex], array[randomIndex]] = [
+      array[randomIndex], array[currentIndex]];
+  }
+
+  return array
+}
