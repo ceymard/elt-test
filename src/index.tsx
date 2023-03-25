@@ -1,20 +1,27 @@
-import { o, $inserted, Repeat, If, Fragment as $, $removed, setup_mutation_observer, $on } from 'elt'
+import { o, $inserted, Repeat, If, Fragment as $, $removed, setup_mutation_observer, $on, $scrollable, node_append, $click } from 'elt'
 import * as immer from "immer"
 immer.enableMapSet()
 o.Observable.useImmer(immer)
 
-import * as I from "elt-fa/sharp-solid"
+import "elt-ui/lib/components/dialog"
+import "elt-ui/lib/components/button"
+import "elt-ui/lib/components/checkbox"
+
+
+import * as I from "elt-fa/sharp-regular"
 
 setup_mutation_observer(document)
 
 
-import { Button, TypographicZone, builder as S, ControlBox, Input, Checkbox, Radio, Toggle, ControlLabel, Select, Control, ControlTable, ControlRow, Responsive, ResponsiveObservable, css_control_border } from 'elt-ui'
+import { Button, TypographicZone, builder as S, ControlBox, Input, Checkbox, Radio, Toggle, ControlLabel, Select, ControlTable, ControlRow, Responsive, ResponsiveObservable, css_control_border } from 'elt-ui'
 
 import { rule } from 'osun'
 import { o_viewport_width, o_online, o_location_hash, oMouseHovering, theme } from 'elt-ui'
 
+
 rule`html, body`({
   fontFamily: `"Roboto", sans-serif !important`,
+  fontWeight: 300,
   touchAction: 'manipulation'
 })
 
@@ -30,11 +37,18 @@ const o_array = o(['a', 'b', 'c'])
 const o_pouet = new ResponsiveObservable(() => '<444')
   .atWidth(444, () => '>=444')
 
-function MyComponent(a: {  }) {
-  return <div></div>
-}
+class Test {
+  me = "me !"
 
-document.body.appendChild(<TypographicZone class={S.padding(16)}>
+
+  method(str: string) {
+    return "hello - " + str + " " + this.me
+  }
+}
+const o_test = o(new Test())
+const o_test2 = o.apply(o_test, "method", [o_input])
+
+node_append(document.body, <TypographicZone class={S.padding(16)}>
   <h1>Roadmap</h1>
   <ul>
     <li>{I.FaSquareCheck()} Respecting alignment !</li>
@@ -50,28 +64,72 @@ document.body.appendChild(<TypographicZone class={S.padding(16)}>
     <li>{I.FaSquare()} Responsive helpers ?</li>
     <li>{I.FaSquare()} Investigate grids</li>
     <li>{I.FaSquare()} Number Selector ?</li>
+
     <li>{I.FaSquare()} Color picker ?</li>
+
   </ul>
+
+
+  <h1>Dialogs</h1>
+
+  <div>
+    <e-button contrast>
+      Dialog
+      <I.FaComment slot="end"/>
+      {$click(() => {
+        node_append(document.body, <e-dialog backdrop-click-close>
+          <h3 slot="header">Hello.</h3>
+          Contenu du dialogue...
+
+          <e-button slot="footer" disabled>{$click(() => console.log("clicked"))}
+            <I.FaXmark slot="start"/>
+            Cancel
+          </e-button>
+
+
+          <e-button contrast slot="footer">Ok <I.FaCheck slot="end"/></e-button>
+        </e-dialog>)
+      })}
+    </e-button>
+  </div>
   <h1>
     Demo
   </h1>
   <div>
-    <Button click={_ => {
-      console.log(o_array.get())
-      o_array.produce(array => {
-        shuffle(array)
-      })
-    }}>Shuffle</Button>
+    <e-button>
+      {$click(() => {
+        console.log(o_array.get())
+        o_array.produce(array => {
+          shuffle(array)
+        })
+      })}
+
+      Shuffle
+      <I.FaShuffle slot="end"/>
+
+    </e-button>
     {' '}
-    <Button click={e => o_array.set((() => {
-      var res = o_array.get().slice()
-      res.push('value')
-      return res
-    })())}>Append</Button>
+    <e-button>
+      {$click(() => {
+        o_array.set((() => {
+          var res = o_array.get().slice()
+          res.push('value')
+          return res
+        })())
+      })}
+      Append
+      <I.FaPlus slot="end"/>
+    </e-button>
     {' '}
-    <Button click={e => o_array.set(o_array.get().slice(0, 3))}>Reset</Button>
+    <e-button>{$click(e => o_array.set(o_array.get().slice(0, 3)))}
+      Reset
+      <I.FaRotate slot="end"/>
+    </e-button>
     {' '}
-    <Button click={_ => o_array.set([])}>Empty</Button>
+    <e-button contrast>{$click(() => o_array.set([]))}
+      Empty
+      <I.FaEmptySet slot="end"/>
+    </e-button>
   </div>
   <div>
     {Repeat(o_array, {separator: () => ', '}, (o_arr, o_i) => <$>
@@ -81,10 +139,12 @@ document.body.appendChild(<TypographicZone class={S.padding(16)}>
   </div>
   <h3>Buttons</h3>
   <div>
-    <Button kind="contrast" click={() => console.log('??')}>Ok</Button> <Button >Cancel</Button> we keep the alignment <Checkbox model={o_check}>Test</Checkbox> <ControlBox><Button>Ok</Button><Button >Cancel</Button></ControlBox> <Button> {I.FaPowerOff()} Hello !</Button> With text next to them. <br/>
-    This should look fine. <Button>{I.FaPowerOff()}</Button> <Button>DO SOMETHING</Button>
+
+    <e-button contrast>{$click(() => console.log('??'))}Ok</e-button> <e-button >Cancel</e-button> we keep the alignment <e-checkbox>{node => { node.o_checked = o_check }}Test 2</e-checkbox> <ControlBox><e-button>Ok</e-button><e-button >Cancel</e-button></ControlBox> <e-button><I.FaPowerOff slot="start"/> Hello !</e-button> With text next to them. <br/>
+    This should look fine. <e-button>{I.FaPowerOff()}</e-button>
+
   </div>
-  {If(o_check, () => <$>
+  {If(o_check, () => <>
     <h3>
       Inputs {o_viewport_width} {o_online.tf(o => o ? 'Online' : 'Offline')} {o_location_hash}
       {' '}
@@ -103,6 +163,8 @@ document.body.appendChild(<TypographicZone class={S.padding(16)}>
       }
     </div>
 
+    <div>Test: {o.apply(o_test, "method", [o_input])}</div>
+
     <div style={{lineHeight: '2em'}}>
       Similarly, inputs Placeholder <Input placeholder='Placeholder' model={o_input}/> conform to the baseline <ControlBox><Input placeholder='Search' model={o_input}>
         {$on('keydown', ev => {
@@ -119,7 +181,7 @@ document.body.appendChild(<TypographicZone class={S.padding(16)}>
         <textarea rows={4} class={[css_control_border, S.border(theme.tint14)]} type='text'/>
       </ControlBox>
     </div>
-  </$>)}
+  </>)}
   <h3>Checkboxes</h3>
   <div style={{lineHeight: '2em'}}>
     Hello !{' '}
@@ -185,7 +247,7 @@ document.body.appendChild(<TypographicZone class={S.padding(16)}>
       <ControlRow>
         <td><ControlLabel>{I.FaKey()}</ControlLabel></td>
         <td><ControlLabel>Password</ControlLabel></td>
-        <td><Input placeholder='password' model={o('')} type='password'/></td>
+        <td><Input placeholder='password' model={o('')} type='text'/></td>
       </ControlRow>
     </ControlTable>
 
@@ -200,9 +262,26 @@ document.body.appendChild(<TypographicZone class={S.padding(16)}>
           <ControlRow>
           <td><ControlLabel>{I.FaKey()}</ControlLabel></td>
             <td><ControlLabel>Mot de passe</ControlLabel></td>
-            <td><Input placeholder='' type='password' model={o('')}></Input></td>
+            <td><Input placeholder='' type='text' model={o('')}></Input></td>
           </ControlRow>
         </ControlTable>
+
+  <div style={{height: "600px", display: "flex", flexDirection: "column", justifyContent: "start"}}>
+    {$scrollable}
+    {/* {node => {
+      const COUNT = 1000
+      const lst: {a: number}[] = new Array(COUNT)
+      for (let i = 0; i < COUNT; i++) {
+        lst[i] = {a: i}
+      }
+      const v = new VirtualScroll.VirtualScroller({
+        observable: o(lst),
+        renderfn: item => <div class={S.padding("8px 16px").borderBottom(theme.tint07)}>item:&nbsp;{item.p("a")}</div>
+      })
+
+      return v.render()
+    }} */}
+  </div>
 
 </TypographicZone>)
 
